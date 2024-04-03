@@ -6,6 +6,10 @@ import { FaGoogle } from "react-icons/fa";
 // import React Router
 import { useNavigate } from "react-router-dom";
 
+// import GSAP
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+
 export default function SignUp() {
   const navigate = useNavigate();
 
@@ -14,6 +18,7 @@ export default function SignUp() {
     name: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -21,13 +26,53 @@ export default function SignUp() {
       [e.target.id]: e.target.value,
     });
   };
-  console.log("🚀 ~ SignUp ~ formData:", formData);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // check if empty
+    if (
+      formData.name === "" ||
+      formData.email === "" ||
+      formData.password === ""
+    ) {
+      alert("can't be empty!");
+      return;
+    }
+    // check if not long enough
+    if (
+      formData.name.length < 2 ||
+      formData.email.length < 2 ||
+      formData.password.length < 2
+    ) {
+      alert("not long enough!");
+      return;
+    }
+    try {
+      setLoading(true);
+      const res = await fetch("/api/auth/sign-up", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        setLoading(false);
+      }
+      setLoading(false);
+      navigate("/sign-in");
+    } catch (error) {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="bg-[#090831] w-[100vw] h-[100vh] flex flex-col justify-center items-center">
       <h1 className="text-[#f5f5f5] text-[3vw] font-semibold font-embed mb-9">
-        Sign up
+        {loading ? "Sign uping..." : "Sign up"}
       </h1>
-      <form className="w-[35vw]">
+      <form onSubmit={handleSubmit} className="w-[35vw]">
         {/* email */}
         <div className="flex justify-between items-center text-[#f5f5f5] text-[2vw] font-embed mb-4">
           <label htmlFor="email">Email</label>
@@ -61,11 +106,6 @@ export default function SignUp() {
         {/* sign up btn */}
         <button className="w-full h-[50px] text-[#f5f5f5] bg-[green] rounded-lg mb-4">
           Sign up
-        </button>
-        {/* Sign up with Google btn */}
-        <button className="mb-4 flex justify-center text-[20px] items-center w-full h-[50px] text-[#f5f5f5] bg-[green] rounded-lg gap-2">
-          <FaGoogle />
-          Sign up with Google
         </button>
         {/* Already have an account? */}
         <p
