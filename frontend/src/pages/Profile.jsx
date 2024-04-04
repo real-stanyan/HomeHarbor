@@ -20,7 +20,11 @@ import {
 } from "firebase/storage";
 import { app } from "../firebase";
 
+//import from React Router
+import { useNavigate } from "react-router-dom";
+
 export default function Profile() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { currentUser, loading, error } = useSelector((state) => state.user);
   const [file, setFile] = useState(undefined);
@@ -28,8 +32,6 @@ export default function Profile() {
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({});
   const fileRef = useRef(null);
-
-  console.log("🚀 ~ Profile ~ formData:", formData);
 
   useEffect(() => {
     if (file) {
@@ -168,20 +170,27 @@ export default function Profile() {
               />
             </div>
           </div>
+          {/* btns */}
           <div className="flex justify-around">
+            {/* post */}
             <button
               type="button"
-              className="w-[20%] h-[50px] bg-amber-600 text-[#f5f5f5] text-[1.5vw] font-medium rounded-lg hover:opacity-60 disabled:opacity-30"
+              onClick={() => {
+                navigate("/post-listing");
+              }}
+              className="w-[20%] h-[50px] bg-amber-600 text-[#f5f5f5] text-[1.5vw] font-medium rounded-lg hover:opacity-60 "
             >
               post
             </button>
+            {/* sign out */}
             <button
               type="button"
               onClick={handleSignOut}
-              className="w-[20%] h-[50px] bg-red-700 text-[#f5f5f5] text-[1.5vw] font-medium rounded-lg hover:opacity-60 disabled:opacity-30"
+              className="w-[20%] h-[50px] bg-red-700 text-[#f5f5f5] text-[1.5vw] font-medium rounded-lg hover:opacity-60"
             >
               sign out
             </button>
+            {/* update */}
             <button
               disabled={loading}
               className="w-[20%] h-[50px] bg-green-700 text-[#f5f5f5] text-[1.5vw] font-medium rounded-lg hover:opacity-60 disabled:opacity-30"
