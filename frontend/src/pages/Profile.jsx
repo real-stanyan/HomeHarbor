@@ -6,7 +6,9 @@ import {
   updateUserStart,
   updateUserSuccess,
   updateUserFailure,
-  signInFailure,
+  signOutUserStart,
+  signOutUserSuccess,
+  signOutUserFailure,
 } from "../redux/user/userSlice";
 
 // import firebase
@@ -65,6 +67,21 @@ export default function Profile() {
       ...formData,
       [e.target.id]: e.target.value,
     });
+  };
+
+  const handleSignOut = async () => {
+    try {
+      dispatch(signOutUserStart());
+      const res = await fetch("/api/auth/sign-out");
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(signOutUserFailure(error));
+        return;
+      }
+      dispatch(signOutUserSuccess());
+    } catch (error) {
+      dispatch(signOutUserFailure(error));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -151,9 +168,27 @@ export default function Profile() {
               />
             </div>
           </div>
-          <button className="self-center w-[50%] h-[20%] text-[#f5f5f5] bg-[green] rounded-lg flex justify-center items-center text-[2vw]">
-            {loading ? "updating" : "update"}
-          </button>
+          <div className="flex justify-around">
+            <button
+              type="button"
+              className="w-[20%] h-[50px] bg-amber-600 text-[#f5f5f5] text-[1.5vw] font-medium rounded-lg hover:opacity-60 disabled:opacity-30"
+            >
+              post
+            </button>
+            <button
+              type="button"
+              onClick={handleSignOut}
+              className="w-[20%] h-[50px] bg-red-700 text-[#f5f5f5] text-[1.5vw] font-medium rounded-lg hover:opacity-60 disabled:opacity-30"
+            >
+              sign out
+            </button>
+            <button
+              disabled={loading}
+              className="w-[20%] h-[50px] bg-green-700 text-[#f5f5f5] text-[1.5vw] font-medium rounded-lg hover:opacity-60 disabled:opacity-30"
+            >
+              {loading ? "updating" : "update"}
+            </button>
+          </div>
         </div>
       </form>
       <hr />
