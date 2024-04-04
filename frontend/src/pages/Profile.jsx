@@ -2,6 +2,12 @@ import { useRef, useEffect, useState } from "react";
 
 // import React Redux
 import { useDispatch, useSelector } from "react-redux";
+import {
+  updateUserStart,
+  updateUserSuccess,
+  updateUserFailure,
+  signInFailure,
+} from "../redux/user/userSlice";
 
 // import firebase
 import {
@@ -13,7 +19,8 @@ import {
 import { app } from "../firebase";
 
 export default function Profile() {
-  const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const { currentUser, loading, error } = useSelector((state) => state.user);
   const [file, setFile] = useState(undefined);
   const [filePerc, setFilePerc] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
@@ -60,12 +67,33 @@ export default function Profile() {
     });
   };
 
-  const handleSubmit = async () => {};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      dispatch(updateUserStart());
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(updateUserFailure(data.message));
+        return;
+      }
+      dispatch(updateUserSuccess(data));
+      alert("success");
+    } catch (error) {
+      dispatch(updateUserSuccess(error.message));
+    }
+  };
 
   return (
     <div className="flex flex-col bg-[#090831] w-[100vw] min-h-[100vh] text-[#f5f5f5] pt-[80px] font-embed">
       {/* basic info */}
-      <form className="flex p-[2vw]">
+      <form onSubmit={handleSubmit} className="flex p-[2vw]">
         <div className="flex flex-col justify-center items-center gap-3">
           <input
             type="file"
@@ -124,7 +152,7 @@ export default function Profile() {
             </div>
           </div>
           <button className="self-center w-[50%] h-[20%] text-[#f5f5f5] bg-[green] rounded-lg flex justify-center items-center text-[2vw]">
-            update
+            {loading ? "updating" : "update"}
           </button>
         </div>
       </form>
