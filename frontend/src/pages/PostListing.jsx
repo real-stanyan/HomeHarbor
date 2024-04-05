@@ -12,7 +12,11 @@ import {
 } from "firebase/storage";
 import { app } from "../firebase";
 
+//import React Redux
+import { useSelector } from "react-redux";
+
 export default function PostListing() {
+  const { currentUser } = useSelector((state) => state.user);
   const fileRef = useRef(null);
   const [files, setFiles] = useState([]);
   const [formData, setFormData] = useState({
@@ -20,8 +24,8 @@ export default function PostListing() {
     title: "",
     address: "",
     description: "",
-    type: "",
-    purpose: "",
+    type: "apartment",
+    purpose: "rent",
     bedroom: 0,
     bathroom: 0,
     offer: false,
@@ -31,6 +35,8 @@ export default function PostListing() {
   });
   const [imageUploadError, setImageUploadError] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [posting, setPosting] = useState(false);
+  const [postError, setPostError] = useState("");
 
   useEffect(() => {
     if (files.length > 0) {
@@ -121,6 +127,29 @@ export default function PostListing() {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setPosting(true);
+      const res = await fetch("/api/listing/post-listing", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...formData, userRef: currentUser._id }),
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        setPosting(false);
+        setPostError(data.message);
+      }
+      setPosting(false);
+      setPostError("");
+    } catch (error) {
+      setPostError(error);
+    }
+  };
+
   return (
     <div className="flex flex-col items-center bg-[#090831] w-[100vw] min-h-[100vh] text-[#f5f5f5] p-6 pt-[90px] font-embed">
       {/* post images */}
@@ -131,7 +160,7 @@ export default function PostListing() {
         {/* upload image btn */}
         <input
           type="file"
-          id="iamges"
+          id="image"
           accept="images/*"
           multiple
           hidden
@@ -164,17 +193,21 @@ export default function PostListing() {
         {formData.imageUrls.length}/10 Image(Max.)
       </h1>
       {/* form */}
-      <form className="w-[95%] grid grid-cols-1 md:grid-cols-2 gap-8">
+      <form
+        onSubmit={handleSubmit}
+        className="w-[95%] grid grid-cols-1 md:grid-cols-2 gap-8"
+      >
         {/* title */}
         <div className="flex justify-between px-[5%] items-center gap-8">
           <label htmlFor="title" className="text-[#f5f5f5] text-[1.7vw]">
             Title
           </label>
           <input
+            disabled={uploading}
             type="text"
             id="title"
             onChange={handleChange}
-            className="w-[80%] border-[2px] text-[#f5f5f5] text-[1.5vw] border-[#f5f5f5] rounded-lg bg-transparent p-2 focus:outline-none"
+            className="disabled:opacity-50 w-[80%] border-[2px] text-[#f5f5f5] text-[1.5vw] border-[#f5f5f5] rounded-lg bg-transparent p-2 focus:outline-none"
           />
         </div>
         {/* address */}
@@ -183,10 +216,11 @@ export default function PostListing() {
             Address
           </label>
           <input
+            disabled={uploading}
             type="text"
             id="address"
             onChange={handleChange}
-            className="w-[80%] border-[2px] text-[#f5f5f5] text-[1.5vw] border-[#f5f5f5] rounded-lg bg-transparent p-2 focus:outline-none"
+            className="disabled:opacity-50 w-[80%] border-[2px] text-[#f5f5f5] text-[1.5vw] border-[#f5f5f5] rounded-lg bg-transparent p-2 focus:outline-none"
           />
         </div>
         {/* description */}
@@ -195,12 +229,13 @@ export default function PostListing() {
             Des.
           </label>
           <textarea
+            disabled={uploading}
             name=""
             id="description"
             cols="30"
             rows="10"
             onChange={handleChange}
-            className="w-[80%] h-[170px] border-[2px] text-[#f5f5f5] text-[20px] border-[#f5f5f5] rounded-lg bg-transparent p-4"
+            className="disabled:opacity-50 w-[80%] h-[170px] border-[2px] text-[#f5f5f5] text-[20px] border-[#f5f5f5] rounded-lg bg-transparent p-4"
           ></textarea>
         </div>
         {/* options */}
@@ -211,11 +246,12 @@ export default function PostListing() {
               Type
             </label>
             <select
+              disabled={uploading}
               name=""
               id="type"
               defaultValue="apartment"
               onChange={handleChange}
-              className="text-center w-[60%] border-[2px] text-[#f5f5f5] text-[15px] border-[#f5f5f5] rounded-lg bg-transparent p-2"
+              className="disabled:opacity-50 text-center w-[60%] border-[2px] text-[#f5f5f5] text-[15px] border-[#f5f5f5] rounded-lg bg-transparent p-2"
             >
               <option value="apartment">Apartment</option>
               <option value="house">House</option>
@@ -227,11 +263,12 @@ export default function PostListing() {
               Purpose
             </label>
             <select
+              disabled={uploading}
               name=""
               id="purpose"
               defaultValue="rent"
               onChange={handleChange}
-              className="text-center w-[60%] border-[2px] text-[#f5f5f5] text-[15px] border-[#f5f5f5] rounded-lg bg-transparent p-2"
+              className="disabled:opacity-50 text-center w-[60%] border-[2px] text-[#f5f5f5] text-[15px] border-[#f5f5f5] rounded-lg bg-transparent p-2"
             >
               <option value="rent">Rent</option>
               <option value="sell">Sell</option>
@@ -243,11 +280,12 @@ export default function PostListing() {
               Bedrooms
             </label>
             <input
+              disabled={uploading}
               type="number"
               name=""
               id="bedroom"
               onChange={handleChange}
-              className=" text-center w-[50%] border-[2px] text-[#f5f5f5] text-[15px] border-[#f5f5f5] rounded-lg bg-transparent p-2"
+              className="disabled:opacity-50 text-center w-[50%] border-[2px] text-[#f5f5f5] text-[15px] border-[#f5f5f5] rounded-lg bg-transparent p-2"
             />
           </div>
           {/* Bathrooms */}
@@ -256,11 +294,12 @@ export default function PostListing() {
               Bathrooms
             </label>
             <input
+              disabled={uploading}
               type="number"
               name=""
               id="bathroom"
               onChange={handleChange}
-              className="text-center w-[50%] border-[2px] text-[#f5f5f5] text-[15px] border-[#f5f5f5] rounded-lg bg-transparent p-2"
+              className="disabled:opacity-50 text-center w-[50%] border-[2px] text-[#f5f5f5] text-[15px] border-[#f5f5f5] rounded-lg bg-transparent p-2"
             />
           </div>
           {/* Offer */}
@@ -269,9 +308,10 @@ export default function PostListing() {
               Offer
             </label>
             <input
+              disabled={uploading}
               type="checkbox"
               id="offer"
-              className="w-[30px] h-[30px]"
+              className="disabled:opacity-50 w-[30px] h-[30px]"
               defaultValue={formData.offer}
               onChange={handleChange}
             />
@@ -282,10 +322,11 @@ export default function PostListing() {
               furnished
             </label>
             <input
+              disabled={uploading}
               type="checkbox"
               name=""
               id="furnished"
-              className="w-[30px] h-[30px]"
+              className="disabled:opacity-50 w-[30px] h-[30px]"
               defaultValue={formData.furnished}
               onChange={handleChange}
             />
@@ -300,12 +341,13 @@ export default function PostListing() {
                 Price
               </label>
               <input
+                disabled={uploading}
                 type="number"
                 name=""
                 id="price"
                 defaultValue={formData.price}
                 onChange={handleChange}
-                className="text-center w-[60%] border-[2px] text-[#f5f5f5] text-[1.2vw] border-[#f5f5f5] rounded-lg bg-transparent p-2 focus:outline-none"
+                className="disabled:opacity-50 text-center w-[60%] border-[2px] text-[#f5f5f5] text-[1.2vw] border-[#f5f5f5] rounded-lg bg-transparent p-2 focus:outline-none"
               />
             </div>
             <div className="flex items-center justify-evenly">
@@ -317,11 +359,12 @@ export default function PostListing() {
                 Price
               </label>
               <input
+                disabled={uploading}
                 type="number"
                 name=""
                 id="discount_price"
                 onChange={handleChange}
-                className="text-center w-[60%] border-[2px] text-[#f5f5f5] text-[1.2vw] border-[#f5f5f5] rounded-lg bg-transparent p-2 focus:outline-none"
+                className="disabled:opacity-50 text-center w-[60%] border-[2px] text-[#f5f5f5] text-[1.2vw] border-[#f5f5f5] rounded-lg bg-transparent p-2 focus:outline-none"
               />
             </div>
             <div className="flex justify-center items-center">
@@ -339,11 +382,12 @@ export default function PostListing() {
             </label>
             <div className="flex justify-center items-center">
               <input
+                disabled={uploading}
                 type="number"
                 id="price"
                 defaultValue={formData.price}
                 onChange={handleChange}
-                className="text-center w-[100%] border-[2px] text-[#f5f5f5] text-[1.5vw] border-[#f5f5f5] rounded-lg bg-transparent p-2 focus:outline-none"
+                className="disabled:opacity-50 text-center w-[100%] border-[2px] text-[#f5f5f5] text-[1.5vw] border-[#f5f5f5] rounded-lg bg-transparent p-2 focus:outline-none"
               />
               <span className="text-[2vw] text-[#f5f5f5] mx-3">≈</span>
               <p className="text-[1.6vw] text-[#f5f5f5]">
@@ -354,7 +398,7 @@ export default function PostListing() {
         )}
         {/* post btn */}
         <button className="bg-green-600 text-[#f5f5f5] text-[2vw] border border-[#f5f5f5] rounded-lg font-medium hover:opacity-70 disabled:opacity-50">
-          post
+          {posting ? "posting..." : "post"}
         </button>
       </form>
     </div>
