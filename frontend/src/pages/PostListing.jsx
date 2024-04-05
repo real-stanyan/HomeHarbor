@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 
 // import React icon
 import { IoMdAdd } from "react-icons/io";
+import { MdDelete } from "react-icons/md";
 
 //import firebase
 import {
@@ -127,6 +128,14 @@ export default function PostListing() {
     }
   };
 
+  const hangleDeleteImage = (d_url) => {
+    setFormData({
+      ...formData,
+      imageUrls: formData.imageUrls.filter((url) => url !== d_url),
+    });
+    console.log("🚀 ~ hangleDeleteImage ~ formData:", formData);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -182,11 +191,20 @@ export default function PostListing() {
         </div>
         {/* uploaded images */}
         {formData.imageUrls.map((url) => (
-          <img
+          <div
             key={url}
-            src={url}
-            className="block h-[100%] rounded-lg object-cover"
-          />
+            onClick={() => hangleDeleteImage(url)}
+            className="relative group"
+          >
+            <img
+              src={url}
+              className="block h-[100%] rounded-lg object-cover group-hover:blur-lg"
+            />
+            <MdDelete
+              style={{ left: `calc(50% - 30px)`, top: `calc(50% - 30px)` }}
+              className="text-red-700 absolute w-[60px] h-[60px] opacity-0 drop-shadow-lg group-hover:opacity-90"
+            />
+          </div>
         ))}
       </div>
       <h1 className="self-end text-[#f5f5f5] text-[1.3vw] m-4">
@@ -397,7 +415,10 @@ export default function PostListing() {
           </div>
         )}
         {/* post btn */}
-        <button className="bg-green-600 text-[#f5f5f5] text-[2vw] border border-[#f5f5f5] rounded-lg font-medium hover:opacity-70 disabled:opacity-50">
+        <button
+          disabled={uploading || posting}
+          className="disabled:opacity-50 bg-green-600 text-[#f5f5f5] text-[2vw] border border-[#f5f5f5] rounded-lg font-medium hover:opacity-70"
+        >
           {posting ? "posting..." : "post"}
         </button>
       </form>
