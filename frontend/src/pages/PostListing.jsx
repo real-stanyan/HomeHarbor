@@ -16,8 +16,12 @@ import { app } from "../firebase";
 //import React Redux
 import { useSelector } from "react-redux";
 
+// import React Router
+import { useNavigate } from "react-router-dom";
+
 export default function PostListing() {
   const { currentUser } = useSelector((state) => state.user);
+  const navigate = useNavigate();
   const fileRef = useRef(null);
   const [files, setFiles] = useState([]);
   const [formData, setFormData] = useState({
@@ -154,6 +158,7 @@ export default function PostListing() {
       }
       setPosting(false);
       setPostError("");
+      navigate(`/listing/${data._id}?justCreated=true`);
     } catch (error) {
       setPostError(error);
     }

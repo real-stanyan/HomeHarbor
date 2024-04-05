@@ -12,5 +12,28 @@ export default {
       embed: ["Montserrat", "sans-serif"],
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addComponents }) {
+      addComponents({
+        ".swiper": {
+          width: "100vw",
+          height: "400px",
+        },
+        ".swiper-slide": {
+          textAlign: "center",
+          fontSize: "18px",
+          background: "#fff",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        },
+        ".swiper-slide img": {
+          display: "block",
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+        },
+      });
+    },
+  ],
 };
