@@ -4,6 +4,7 @@ import express from "express";
 import {
   createListing,
   getListing,
+  deleteListing,
 } from "../controllers/listing.controller.js";
 
 // import Utils
@@ -15,5 +16,7 @@ const router = express.Router();
 router.post("/post-listing", verifyToken, createListing);
 // get listing
 router.get("/get-listing/:id", verifyToken, getListing);
+// delete listing
+router.delete("/delete-listing/:id", verifyToken, deleteListing);
 
 export default router;

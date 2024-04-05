@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // import React icon
 import { FaGoogle } from "react-icons/fa";
@@ -61,7 +61,7 @@ export default function SignUp() {
         setLoading(false);
       }
       setLoading(false);
-      navigate("/sign-in");
+      navigate("/sign-in?justCreated=true");
     } catch (error) {
       setLoading(false);
     }

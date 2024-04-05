@@ -1,15 +1,33 @@
-import React from "react";
+import { useEffect } from "react";
 
 // import GSAP
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
+// import React Router
+import queryString from "query-string";
+
+// import React-Toastify
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 export default function Home() {
+  const queryParams = queryString.parse(location.search);
+  const notify = () => toast(`Welcome back ${queryParams.name}`);
+
   useGSAP(() => {
     gsap.to("#home_text", { opacity: 1, duration: 2 });
   }, []);
+
+  useEffect(() => {
+    if (queryParams.name) {
+      notify();
+    }
+  });
+
   return (
     <div className="flex justify-center items-center bg-home_bg w-[100vw] h-[100vh] bg-cover overflow-x-hidden">
+      <ToastContainer />
       {/* home text */}
       <div
         id="home_text"

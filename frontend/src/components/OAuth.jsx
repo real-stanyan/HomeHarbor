@@ -31,7 +31,7 @@ export default function OAuth() {
       const data = await res.json();
       console.log("🚀 ~ handleGoogleClick ~ data:", data);
       dispatch(signInSuccess(data));
-      navigate("/");
+      navigate(`/?name=${data.name}`);
     } catch (error) {
       console.log("could not sign in with google", error);
     }

@@ -1,10 +1,8 @@
-import { useState } from "react";
-
-// import React icon
-import { FaGoogle } from "react-icons/fa";
+import { useState, useEffect } from "react";
 
 // import React Router
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import queryString from "query-string";
 
 //import React Redux
 import { useDispatch, useSelector } from "react-redux";
@@ -17,15 +15,29 @@ import {
 // import Components
 import OAuth from "../components/OAuth";
 
+// import React-Toastify
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 export default function SignIn() {
+  const location = useLocation();
+  const queryParams = queryString.parse(location.search);
   const { loading, error } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
+  const notify = () => toast("just created!");
+
+  useEffect(() => {
+    if (queryParams.justCreated === "true") {
+      notify();
+    }
+  }, []);
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -101,6 +113,7 @@ export default function SignIn() {
           Dont't have an account?
         </p>
       </form>
+      <ToastContainer />
     </div>
   );
 }

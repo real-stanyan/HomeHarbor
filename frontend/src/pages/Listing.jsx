@@ -18,6 +18,10 @@ import { FaBath } from "react-icons/fa6";
 import { FaDollarSign } from "react-icons/fa6";
 import { IoMdPricetags } from "react-icons/io";
 
+// import React-Toastify
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 export default function Listing() {
   SwiperCore.use([Navigation]);
   const location = useLocation();
@@ -26,11 +30,11 @@ export default function Listing() {
   const [poster, setPoster] = useState(false);
   const [fetchError, setFetchError] = useState(false);
   const queryParams = queryString.parse(location.search);
+  const notify = () => toast("Post Success!");
 
   useEffect(() => {
     if (queryParams.justCreated === "true") {
-      queryParams.justCreated = "false";
-      return alert("just created!");
+      notify();
     }
   }, []);
 
@@ -64,9 +68,7 @@ export default function Listing() {
 
   const setPriceForm = (u_price) => {
     let output = [];
-
     let count = 0;
-
     for (let i = u_price.length - 1; i >= 0; i--) {
       if (count % 3 === 0) {
         output.unshift("," + String(u_price.slice(-3)));
@@ -75,13 +77,13 @@ export default function Listing() {
       count += 1;
     }
     output[0] = output[0].slice(1);
-    console.log("🚀 ~ setPriceForm ~ output:", output);
     return output.join("");
   };
 
   console.log("🚀 ~ Listing ~ data:", data);
   return (
     <>
+      <ToastContainer />
       {data && (
         <div className="flex flex-col bg-[#090831] max-w-[100vw] min-h-[100vh] pt-[90px]">
           {/* image swiper */}
