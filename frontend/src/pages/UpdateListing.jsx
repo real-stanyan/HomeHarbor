@@ -211,12 +211,12 @@ export default function UpdateListing() {
     }
     try {
       setPosting(true);
-      const res = await fetch("/api/listing/post-listing", {
+      const res = await fetch(`/api/listing/update-listing/${listing._id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ...listing, userRef: currentUser._id }),
+        body: JSON.stringify(listing),
       });
       const data = await res.json();
       if (data.success === false) {
@@ -225,13 +225,15 @@ export default function UpdateListing() {
       }
 
       setPosting(false);
-      navigate(`/listing/${data._id}?justCreated=true`);
-    } catch (error) {}
+      navigate(`/listing/${data._id}?justUpdated=true`);
+    } catch (error) {
+      alert(error);
+    }
   };
 
   return (
     listing && (
-      <div className="flex flex-col items-center bg-[#090831] max-w-[100vw] min-h-[100vh] text-[#f5f5f5] p-6 pt-[90px] font-embed">
+      <div className="z-50 flex flex-col items-center bg-[#090831] max-w-[100vw] min-h-[100vh] text-[#f5f5f5] p-6 pt-[90px] font-embed">
         <ToastContainer />
         {/* post images */}
         <div

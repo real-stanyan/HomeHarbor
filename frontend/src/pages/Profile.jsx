@@ -169,7 +169,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="flex flex-col bg-[#090831] max-w-[100vw] min-h-[100vh] text-[#f5f5f5] pt-[80px] font-embed">
+    <div className="z-10 flex flex-col bg-[#090831] max-w-[100vw] min-h-[100vh] text-[#f5f5f5] pt-[80px] font-embed">
       <ToastContainer />
       {/* basic info */}
       <form onSubmit={handleSubmit} className="flex p-[2vw]">
@@ -356,7 +356,8 @@ export default function Profile() {
               <div className="absolute w-[100%] h-full top-0 left-0 group-hover:flex flex-col justify-evenly items-center hidden ">
                 <div
                   className="flex justify-center items-center w-[40%] h-[15%] bg-green-700 border border-[#f5f5f5] text-[#f5f5f5] rounded-lg hover:opacity-70 cursor-pointer"
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
                     navigate(`/listing/${item._id}`);
                   }}
                 >
@@ -364,7 +365,10 @@ export default function Profile() {
                 </div>
                 <div
                   className="flex justify-center items-center w-[40%] h-[15%] bg-amber-700 border border-[#f5f5f5] text-[#f5f5f5] rounded-lg hover:opacity-70 cursor-pointer"
-                  onClick={() => navigate(`/update-listing/${item._id}`)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/update-listing/${item._id}`);
+                  }}
                 >
                   edit
                 </div>

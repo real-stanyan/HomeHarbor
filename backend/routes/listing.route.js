@@ -5,6 +5,7 @@ import {
   createListing,
   getListing,
   getListings,
+  updateListing,
   deleteListing,
 } from "../controllers/listing.controller.js";
 
@@ -19,6 +20,8 @@ router.post("/post-listing", verifyToken, createListing);
 router.get("/get-listing/:id", verifyToken, getListing);
 // get listings
 router.get("/get-listings", getListings);
+// update listing
+router.post("/update-listing/:id", verifyToken, updateListing);
 // delete listing
 router.delete("/delete-listing/:id", verifyToken, deleteListing);
 

@@ -32,11 +32,16 @@ export default function Listing() {
   const [poster, setPoster] = useState(false);
   const [fetchError, setFetchError] = useState(false);
   const queryParams = queryString.parse(location.search);
-  const notify = () => toast("Post Success!");
+  // Toasts
+  const justCreated = () => toast("Post Success!");
+  const justUpdated = () => toast("Update Success!");
 
   useEffect(() => {
     if (queryParams.justCreated === "true") {
-      notify();
+      justCreated();
+    }
+    if (queryParams.justUpdated === "true") {
+      justUpdated();
     }
   }, []);
 
