@@ -25,7 +25,8 @@
     "react-toastify": "^10.0.5",
     "redux-persist": "^6.0.0",
     "sort-by": "^1.2.0",
-    "swiper": "^11.1.0"
+    "swiper": "^11.1.0",
+    "three": "^0.163.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
