@@ -17,6 +17,8 @@ import { MdOutlineBedroomParent } from "react-icons/md";
 import { FaBath } from "react-icons/fa6";
 import { FaDollarSign } from "react-icons/fa6";
 import { IoMdPricetags } from "react-icons/io";
+import { BsFillCarFrontFill } from "react-icons/bs";
+import { MdOutlineLiving } from "react-icons/md";
 
 // import React-Toastify
 import { ToastContainer, toast } from "react-toastify";
@@ -85,9 +87,9 @@ export default function Listing() {
     <>
       <ToastContainer />
       {data && (
-        <div className="flex flex-col bg-[#090831] max-w-[100vw] min-h-[100vh] pt-[90px]">
+        <div className="flex flex-col bg-[#090831] max-w-[100vw] min-h-[100vh] pt-[90px] overflow-hidden">
           {/* image swiper */}
-          <Swiper navigation className="h-[50vh]">
+          <Swiper navigation className="w-[100%] h-[50vh]">
             {data.imageUrls.map((url) => (
               <SwiperSlide key={url}>
                 <div
@@ -102,26 +104,43 @@ export default function Listing() {
           </Swiper>
           {/* information */}
           <div className="flex-1 max-w-[90%] mx-auto grid grid-cols-2 font-embed text-[1.8vw] text-[#f5f5f5] p-2">
-            <div className="text-center p-2">
+            <div className="text-center p-2 w-[90%]">
               <h1>{data.title}</h1>
-              <h1 className="text-[1vw] p-2">{data.description}</h1>
+              <h1 className="text-[1vw] p-2 w-[100%] text-wrap break-all">
+                {data.description}
+              </h1>
             </div>
             {/* Tags */}
-            <div className="flex flex-col justify-evenly items-center">
+            <div className="flex flex-col justify-evenly items-center w-[80%] mx-auto">
               {/* Address */}
               <div className="flex justify-center items-center gap-4">
                 <MdOutlineLocationCity className="text-[2vw]" />
                 <h1 className="text-[1.7vw]">{data.address}</h1>
               </div>
-              {/* Bedrooms */}
-              <div className="flex justify-center items-center gap-4">
-                <MdOutlineBedroomParent className="text-[2vw]" />
-                <h1 className="text-[1.7vw]">{data.bedroom}</h1>
-              </div>
-              {/* Bathrooms */}
-              <div className="flex justify-center items-center gap-4">
-                <FaBath className="text-[2vw]" />
-                <h1 className="text-[1.7vw]">{data.bathroom}</h1>
+              {/* tags */}
+              <div className="grid grid-cols-2 gap-4 w-full">
+                {/* Bedrooms */}
+                <div className="flex justify-between p-[5%] items-center gap-4">
+                  <MdOutlineBedroomParent className="text-[2vw]" />
+                  <h1 className="text-[1.7vw]">{data.bedroom}</h1>
+                </div>
+                {/* Bathrooms */}
+                <div className="flex justify-between p-[5%] items-center gap-4">
+                  <FaBath className="text-[2vw]" />
+                  <h1 className="text-[1.7vw]">{data.bathroom}</h1>
+                </div>
+                {/* Parking */}
+                <div className="flex justify-between p-[5%] items-center gap-4">
+                  <BsFillCarFrontFill className="text-[2vw]" />
+                  <h1 className="text-[1.7vw]">{data.parking}</h1>
+                </div>
+                {/* Furnished */}
+                <div className="flex justify-between p-[5%] items-center gap-4">
+                  <MdOutlineLiving className="text-[2vw]" />
+                  <h1 className="text-[1.7vw] text-center">
+                    {data.furnished ? "furnished" : "unfurnished"}
+                  </h1>
+                </div>
               </div>
             </div>
             {/* poster */}

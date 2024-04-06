@@ -5,6 +5,8 @@ import { errorHandler } from "../utils/errorHandler.js";
 export const createListing = async (req, res, next) => {
   try {
     const listing = await Listing.create(req.body);
+    console.log("🚀 ~ createListing ~ listing:", listing);
+
     res.status(201).json(listing);
   } catch (error) {
     next(error);
@@ -19,6 +21,16 @@ export const getListing = async (req, res, next) => {
       return next(errorHandler(404, "Listing not found!"));
     }
     res.status(200).json(listing);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// get listings
+export const getListings = async (req, res, next) => {
+  try {
+    const listings = await Listing.find().sort("-1").limit(10);
+    return res.status(200).json(listings);
   } catch (error) {
     next(error);
   }

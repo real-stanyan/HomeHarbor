@@ -28,11 +28,12 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // import React icon
-import { MdOutlineLocationCity } from "react-icons/md";
 import { MdOutlineBedroomParent } from "react-icons/md";
 import { FaBath } from "react-icons/fa6";
 import { FaDollarSign } from "react-icons/fa6";
 import { IoMdPricetags } from "react-icons/io";
+import { BsFillCarFrontFill } from "react-icons/bs";
+import { MdOutlineLiving } from "react-icons/md";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -266,7 +267,7 @@ export default function Profile() {
           listings.map((item) => (
             <div
               key={item._id}
-              className="group border border-[#f5f5f5] rounded-lg overflow-hidden"
+              className="h-[350px] group border border-[#f5f5f5] rounded-lg overflow-hidden"
             >
               {/* image */}
               <img
@@ -274,32 +275,55 @@ export default function Profile() {
                 className="w-full h-[200px] object-cover group-hover:blur-lg"
               />
               {/* info */}
-              <div className="grid grid-cols-2 gap-2 p-2 group-hover:hidden">
-                <div>
-                  <h1 className="text-[30px]">{item.title}</h1>
-                  {item.offer ? (
-                    // if offer
-                    <h1>1</h1>
-                  ) : (
-                    // if no offer
-                    <h1 className="flex items-center text-[30px] gap-2">
-                      <FaDollarSign />
-                      {setPriceForm(item.price)}
-                    </h1>
-                  )}
-                </div>
-                {/* tags */}
-                <div>
-                  <div className="flex items-center text-[30px] gap-2">
-                    <MdOutlineBedroomParent />
-                    <h1>{item.bedroom}</h1>
+              <div className="flex flex-col gap-2 p-2 group-hover:hidden">
+                {/* title */}
+                <h1 className="text-[15px] text-center">{item.title}</h1>
+                <div className="flex">
+                  <div className="flex flex-col justify-center items-center w-[45%]">
+                    {item.purpose === "sell" ? <h1>sell</h1> : <h1>rent</h1>}
+                    {item.offer ? (
+                      // if offer
+                      <div className="flex flex-col justify-evenly text-[20px]">
+                        <h1 className="flex items-center justify-center gap-2">
+                          <FaDollarSign />
+                          {setPriceForm(item.price)}
+                        </h1>
+                        <h1 className="flex items-center justify-center gap-2">
+                          <IoMdPricetags />
+                          {setPriceForm(item.discount_price)}
+                        </h1>
+                      </div>
+                    ) : (
+                      // if no offer
+                      <h1 className="flex items-center justify-center text-[20px] gap-2">
+                        <FaDollarSign />
+                        {setPriceForm(item.price)}
+                      </h1>
+                    )}
                   </div>
-                  <div className="flex items-center text-[30px] gap-2">
-                    <FaBath />
-                    <h1>{item.bathroom}</h1>
+                  {/* tags */}
+                  <div className="grid grid-cols-2 flex-1">
+                    {/* list card > bedrooms */}
+                    <div className="flex justify-between px-[5%] items-center text-[30px] gap-2">
+                      <MdOutlineBedroomParent />
+                      <h1>{item.bedroom}</h1>
+                    </div>
+                    {/* list card > bathroom */}
+                    <div className="flex justify-between px-[5%] items-center text-[30px] gap-2">
+                      <FaBath />
+                      <h1>{item.bathroom}</h1>
+                    </div>
+                    {/* list card > parking */}
+                    <div className="flex justify-between px-[5%] items-center text-[30px] gap-2">
+                      <BsFillCarFrontFill />
+                      <h1>{item.parking}</h1>
+                    </div>
+                    {/* list card > furnished */}
+                    <div className="flex justify-between px-[5%] items-center text-[30px] gap-2">
+                      <MdOutlineLiving />
+                      <h1>{item.furnished ? "Yes" : "No"}</h1>
+                    </div>
                   </div>
-                  <div></div>
-                  <div></div>
                 </div>
               </div>
               {/* actions */}

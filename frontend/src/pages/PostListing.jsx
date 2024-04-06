@@ -4,6 +4,10 @@ import { useState, useRef, useEffect } from "react";
 import { IoMdAdd } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
 
+// import React-Toastify
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 //import firebase
 import {
   getDownloadURL,
@@ -33,6 +37,7 @@ export default function PostListing() {
     purpose: "rent",
     bedroom: 0,
     bathroom: 0,
+    parking: 0,
     offer: false,
     furnished: false,
     price: 0,
@@ -41,7 +46,9 @@ export default function PostListing() {
   const [imageUploadError, setImageUploadError] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [posting, setPosting] = useState(false);
-  const [postError, setPostError] = useState("");
+
+  // Toasts
+  const postError = (message) => toast.error(message);
 
   useEffect(() => {
     if (files.length > 0) {
@@ -122,6 +129,7 @@ export default function PostListing() {
       e.target.id === "discount_price" ||
       e.target.id === "bedroom" ||
       e.target.id === "bathroom" ||
+      e.target.id === "parking" ||
       e.target.id === "type" ||
       e.target.id === "purpose"
     ) {
@@ -142,6 +150,66 @@ export default function PostListing() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (formData.imageUrls.length < 1) {
+      postError("At least upload 1 image");
+      return;
+    }
+    // check if title <6 or =0
+    if (formData.title < 6) {
+      if (formData.title === "") {
+        postError("Title can't be empty");
+        return;
+      }
+      postError("Title can't be less than 6 chars");
+      return;
+    }
+    // check if address < 6 or =0
+    if (formData.address < 6) {
+      if (formData.address === "") {
+        postError("Address can't be empty");
+        return;
+      }
+      postError("Address can't be less than 6 chars");
+      return;
+    }
+    // check if description < 50 or =0
+    if (formData.description < 50) {
+      if (formData.description === "") {
+        postError("Description can't be empty");
+        return;
+      }
+      postError("Description can't be less than 50 chars");
+      return;
+    }
+    // check if bedroom =0
+    if (formData.bedroom === 0) {
+      postError("Bedroom can't be empty");
+      return;
+    }
+    // check if bathroom =0
+    if (formData.bathroom === 0) {
+      postError("Bathroom can't be empty");
+      return;
+    }
+    // check if parking =0
+    if (formData.parking === 0) {
+      postError("Parking can't be empty");
+      return;
+    }
+    // check if price =0
+    if (formData.price === 0) {
+      postError("Price can't be empty");
+      return;
+    }
+    // check if discount_price =0
+    if (formData.offer && formData.discount_price === 0) {
+      postError("Discount price can't be empty");
+    }
+    // check if discount_price >= price
+    if (formData.offer && formData.price <= formData.discount_price) {
+      postError("Discount price can't be more than price");
+      return;
+    }
     try {
       setPosting(true);
       const res = await fetch("/api/listing/post-listing", {
@@ -154,18 +222,17 @@ export default function PostListing() {
       const data = await res.json();
       if (data.success === false) {
         setPosting(false);
-        setPostError(data.message);
+        postError(data.message);
       }
+
       setPosting(false);
-      setPostError("");
       navigate(`/listing/${data._id}?justCreated=true`);
-    } catch (error) {
-      setPostError(error);
-    }
+    } catch (error) {}
   };
 
   return (
-    <div className="flex flex-col items-center bg-[#090831] w-[100vw] min-h-[100vh] text-[#f5f5f5] p-6 pt-[90px] font-embed">
+    <div className="flex flex-col items-center bg-[#090831] max-w-[100vw] min-h-[100vh] text-[#f5f5f5] p-6 pt-[90px] font-embed">
+      <ToastContainer />
       {/* post images */}
       <div
         onChange={(e) => setFiles(e.target.files)}
@@ -218,7 +285,7 @@ export default function PostListing() {
       {/* form */}
       <form
         onSubmit={handleSubmit}
-        className="w-[95%] grid grid-cols-1 md:grid-cols-2 gap-8"
+        className="flex-1 w-[95%] grid grid-cols-1 md:grid-cols-2 gap-8"
       >
         {/* title */}
         <div className="flex justify-between px-[5%] items-center gap-8">
@@ -234,7 +301,7 @@ export default function PostListing() {
           />
         </div>
         {/* address */}
-        <div className="flex justify-between px-[5%] items-center gap-8">
+        <div className="flex justify-between items-center gap-8">
           <label htmlFor="title" className="text-[#f5f5f5] text-[1.7vw]">
             Address
           </label>
@@ -247,7 +314,7 @@ export default function PostListing() {
           />
         </div>
         {/* description */}
-        <div className="flex justify-between px-[5%] gap-2">
+        <div className="flex justify-between gap-2">
           <label htmlFor="description" className="text-[#f5f5f5] text-[1.7vw]">
             Des.
           </label>
@@ -262,97 +329,123 @@ export default function PostListing() {
           ></textarea>
         </div>
         {/* options */}
-        <div className="grid grid-cols-2">
+        <div className="grid grid-rows-3 gap-4">
+          {/* Row 1 */}
           {/* type */}
-          <div className="flex justify-between px-[10%] items-center gap-4">
-            <label htmlFor="type" className="text-[#f5f5f5] text-[1.2vw] ">
-              Type
-            </label>
-            <select
-              disabled={uploading}
-              name=""
-              id="type"
-              defaultValue="apartment"
-              onChange={handleChange}
-              className="disabled:opacity-50 text-center w-[60%] border-[2px] text-[#f5f5f5] text-[15px] border-[#f5f5f5] rounded-lg bg-transparent p-2"
-            >
-              <option value="apartment">Apartment</option>
-              <option value="house">House</option>
-            </select>
+          <div className="flex justify-evenly items-center gap-4">
+            <div className="flex flex-1 justify-between items-center gap-4">
+              <label htmlFor="type" className="text-[#f5f5f5] text-[1.2vw] ">
+                Type
+              </label>
+              <select
+                disabled={uploading}
+                name=""
+                id="type"
+                defaultValue="apartment"
+                onChange={handleChange}
+                className="disabled:opacity-50 text-center w-[80%] border-[2px] text-[#f5f5f5] text-[15px] border-[#f5f5f5] rounded-lg bg-transparent p-2"
+              >
+                <option value="apartment">Apartment</option>
+                <option value="house">House</option>
+              </select>
+            </div>
+            {/* Purpose */}
+            <div className="flex flex-1 justify-between items-center gap-4">
+              <label htmlFor="purpose" className="text-[#f5f5f5] text-[1.2vw]">
+                Purpose
+              </label>
+              <select
+                disabled={uploading}
+                name=""
+                id="purpose"
+                defaultValue="rent"
+                onChange={handleChange}
+                className="disabled:opacity-50 text-center w-[80%] border-[2px] text-[#f5f5f5] text-[15px] border-[#f5f5f5] rounded-lg bg-transparent p-2"
+              >
+                <option value="rent">Rent</option>
+                <option value="sell">Sell</option>
+              </select>
+            </div>
           </div>
-          {/* Purpose */}
-          <div className="flex justify-between px-[10%] items-center gap-4">
-            <label htmlFor="purpose" className="text-[#f5f5f5] text-[1.2vw]">
-              Purpose
-            </label>
-            <select
-              disabled={uploading}
-              name=""
-              id="purpose"
-              defaultValue="rent"
-              onChange={handleChange}
-              className="disabled:opacity-50 text-center w-[60%] border-[2px] text-[#f5f5f5] text-[15px] border-[#f5f5f5] rounded-lg bg-transparent p-2"
-            >
-              <option value="rent">Rent</option>
-              <option value="sell">Sell</option>
-            </select>
-          </div>
+          {/* Row 2 */}
           {/* Bedrooms */}
-          <div className="flex justify-between px-[10%] items-center gap-4">
-            <label htmlFor="bedroom" className="text-[#f5f5f5] text-[1.2vw]">
-              Bedrooms
-            </label>
-            <input
-              disabled={uploading}
-              type="number"
-              name=""
-              id="bedroom"
-              onChange={handleChange}
-              className="disabled:opacity-50 text-center w-[50%] border-[2px] text-[#f5f5f5] text-[15px] border-[#f5f5f5] rounded-lg bg-transparent p-2"
-            />
+          <div className="flex justify-evenly items-center gap-4">
+            <div className="flex justify-between items-center gap-4">
+              <label htmlFor="bedroom" className="text-[#f5f5f5] text-[1.2vw]">
+                Bedrooms
+              </label>
+              <input
+                disabled={uploading}
+                type="number"
+                name=""
+                id="bedroom"
+                onChange={handleChange}
+                className="disabled:opacity-50 text-center w-[50%] border-[2px] text-[#f5f5f5] text-[15px] border-[#f5f5f5] rounded-lg bg-transparent p-2"
+              />
+            </div>
+            {/* Bathrooms */}
+            <div className="flex justify-between items-center gap-4">
+              <label htmlFor="bathroom" className="text-[#f5f5f5] text-[1.2vw]">
+                Bathrooms
+              </label>
+              <input
+                disabled={uploading}
+                type="number"
+                name=""
+                id="bathroom"
+                onChange={handleChange}
+                className="disabled:opacity-50 text-center w-[50%] border-[2px] text-[#f5f5f5] text-[15px] border-[#f5f5f5] rounded-lg bg-transparent p-2"
+              />
+            </div>
+            {/* Parking */}
+            <div className="flex justify-between items-center gap-4">
+              <label htmlFor="parking" className="text-[#f5f5f5] text-[1.2vw]">
+                Parkings
+              </label>
+              <input
+                disabled={uploading}
+                type="number"
+                name=""
+                id="parking"
+                onChange={handleChange}
+                className="disabled:opacity-50 text-center w-[50%] border-[2px] text-[#f5f5f5] text-[15px] border-[#f5f5f5] rounded-lg bg-transparent p-2"
+              />
+            </div>
           </div>
-          {/* Bathrooms */}
-          <div className="flex justify-between px-[10%] items-center gap-4">
-            <label htmlFor="bathroom" className="text-[#f5f5f5] text-[1.2vw]">
-              Bathrooms
-            </label>
-            <input
-              disabled={uploading}
-              type="number"
-              name=""
-              id="bathroom"
-              onChange={handleChange}
-              className="disabled:opacity-50 text-center w-[50%] border-[2px] text-[#f5f5f5] text-[15px] border-[#f5f5f5] rounded-lg bg-transparent p-2"
-            />
-          </div>
-          {/* Offer */}
-          <div className="flex justify-between px-[10%] items-center gap-4">
-            <label htmlFor="offer" className="text-[#f5f5f5] text-[1.2vw]">
-              Offer
-            </label>
-            <input
-              disabled={uploading}
-              type="checkbox"
-              id="offer"
-              className="disabled:opacity-50 w-[30px] h-[30px]"
-              defaultValue={formData.offer}
-              onChange={handleChange}
-            />
-          </div>
-          {/* Furnished */}
-          <div className="flex justify-between px-[10%] items-center gap-4">
-            <label htmlFor="furnished" className="text-[#f5f5f5] text-[1.2vw]">
-              furnished
-            </label>
-            <input
-              disabled={uploading}
-              type="checkbox"
-              name=""
-              id="furnished"
-              className="disabled:opacity-50 w-[30px] h-[30px]"
-              defaultValue={formData.furnished}
-              onChange={handleChange}
-            />
+          {/* Row 3 */}
+          <div className="flex justify-evenly items-center">
+            {/* Offer */}
+            <div className="flex justify-between px-[10%] items-center gap-4">
+              <label htmlFor="offer" className="text-[#f5f5f5] text-[1.2vw]">
+                Offer
+              </label>
+              <input
+                disabled={uploading}
+                type="checkbox"
+                id="offer"
+                className="disabled:opacity-50 w-[30px] h-[30px]"
+                defaultValue={formData.offer}
+                onChange={handleChange}
+              />
+            </div>
+            {/* Furnished */}
+            <div className="flex justify-between px-[10%] items-center gap-4">
+              <label
+                htmlFor="furnished"
+                className="text-[#f5f5f5] text-[1.2vw]"
+              >
+                furnished
+              </label>
+              <input
+                disabled={uploading}
+                type="checkbox"
+                name=""
+                id="furnished"
+                className="disabled:opacity-50 w-[30px] h-[30px]"
+                defaultValue={formData.furnished}
+                onChange={handleChange}
+              />
+            </div>
           </div>
         </div>
         {/* Prices */}
