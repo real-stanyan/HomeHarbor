@@ -7,6 +7,7 @@ import {
   getListings,
   updateListing,
   deleteListing,
+  searchListings,
 } from "../controllers/listing.controller.js";
 
 // import Utils
@@ -24,5 +25,7 @@ router.get("/get-listings", getListings);
 router.post("/update-listing/:id", verifyToken, updateListing);
 // delete listing
 router.delete("/delete-listing/:id", verifyToken, deleteListing);
+// search listing
+router.post("/search-listings", searchListings);
 
 export default router;

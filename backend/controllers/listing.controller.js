@@ -73,3 +73,34 @@ export const deleteListing = async (req, res, next) => {
     next(error);
   }
 };
+
+// search listing
+export const searchListings = async (req, res, next) => {
+  console.log("====================================");
+  console.log(req.body);
+  console.log("====================================");
+  const bedroom = parseFloat(req.body.bedroom);
+  console.log("🚀 ~ searchListings ~ bedroom:", bedroom);
+  const bathroom = parseFloat(req.body.bathroom);
+  console.log("🚀 ~ searchListings ~ bathroom:", bathroom);
+  const parking = parseFloat(req.body.parking);
+  console.log("🚀 ~ searchListings ~ parking:", parking);
+  const furnished = req.body.furnished === "yes" ? true : false;
+  console.log("🚀 ~ searchListings ~ furnished:", furnished);
+  const type = req.body.type || "apartment";
+  console.log("🚀 ~ searchListings ~ type:", type);
+
+  try {
+    const listings = await Listing.find({
+      bedroom: { $gt: bedroom },
+      bathroom: { $gt: bathroom },
+      parking: { $gt: parking },
+      furnished: furnished,
+      type: type,
+    });
+
+    res.status(200).json(listings);
+  } catch (error) {
+    next(error);
+  }
+};
