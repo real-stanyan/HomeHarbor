@@ -41,7 +41,7 @@ export default function Header() {
       <form className="flex flex-1 items-center justify-center">
         <input
           type="text"
-          className="p-2 rounded-lg focus:outline-none w-[15vw]"
+          className="p-2 rounded-lg focus:outline-none w-[15vw] opacity-70"
         />
         <button className="m-[-35px]">
           <FaSearch className="text-[black] text-[20px]" />
