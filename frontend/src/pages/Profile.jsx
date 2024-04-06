@@ -263,89 +263,124 @@ export default function Profile() {
       <hr className="my-4" />
       {/* listing */}
       <div className="w-[90%] mx-auto grid grid-cols-4 gap-3">
-        {listings &&
+        {listings ? (
+          // if fetch success
           listings.map((item) => (
             <div
               key={item._id}
-              className="h-[350px] group border border-[#f5f5f5] rounded-lg overflow-hidden"
+              onClick={() => navigate(`/listing/${item._id}`)}
+              className="relative group duration-100 flex flex-col min-h-[400px] border-2 border-[#333333] rounded-lg bg-[#e5f0f5] text-[#333333] overflow-hidden font-embed"
             >
-              {/* image */}
+              {/* cover image */}
               <img
                 src={item.imageUrls[0]}
-                className="w-full h-[200px] object-cover group-hover:blur-lg"
+                alt=""
+                className="w-full h-[65%] group-hover:blur-lg"
               />
-              {/* info */}
-              <div className="flex flex-col gap-2 p-2 group-hover:hidden">
-                {/* title */}
-                <h1 className="text-[15px] text-center">{item.title}</h1>
-                <div className="flex">
-                  <div className="flex flex-col justify-center items-center w-[45%]">
-                    {item.purpose === "sell" ? <h1>sell</h1> : <h1>rent</h1>}
-                    {item.offer ? (
-                      // if offer
-                      <div className="flex flex-col justify-evenly text-[20px]">
-                        <h1 className="flex items-center justify-center gap-2">
+              {/* listing card */}
+              <div className="flex flex-1 flex-col justify-center items-center group-hover:blur-lg">
+                <h1 className="text-center">{item.title}</h1>
+                {/* listing card > info */}
+                <div className="w-full flex gap-2">
+                  {/* listing card > prices */}
+                  {item.offer === true ? (
+                    // if offer
+                    <div className="text-[15px] w-[35%] flex flex-col justify-center items-center">
+                      <div className="flex flex-col justify-center items-center">
+                        <h1>sell</h1>
+                        <h1 className="flex items-center">
                           <FaDollarSign />
                           {setPriceForm(item.price)}
-                        </h1>
-                        <h1 className="flex items-center justify-center gap-2">
-                          <IoMdPricetags />
-                          {setPriceForm(item.discount_price)}
+                          {item.purpose === "rent" ? (
+                            <span className="text-[10px] font-bold ml-[3px]">
+                              per month
+                            </span>
+                          ) : (
+                            ""
+                          )}
                         </h1>
                       </div>
-                    ) : (
-                      // if no offer
-                      <h1 className="flex items-center justify-center text-[20px] gap-2">
+                      <div className="flex flex-col justify-center items-center">
+                        <h1>sell</h1>
+                        <h1 className="flex items-center">
+                          <FaDollarSign />
+                          {setPriceForm(item.price)}
+                          {item.purpose === "rent" ? (
+                            <span className="text-[10px] font-bold ml-[3px]">
+                              per month
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                        </h1>
+                      </div>
+                    </div>
+                  ) : (
+                    // if no offer
+                    <div className="text-[19px] w-[35%] flex flex-col justify-center items-center">
+                      <h1>sell</h1>
+                      <h1 className="flex items-center">
                         <FaDollarSign />
                         {setPriceForm(item.price)}
+                        {item.purpose === "rent" ? (
+                          <span className="text-[10px] font-bold ml-[3px]">
+                            per month
+                          </span>
+                        ) : (
+                          ""
+                        )}
                       </h1>
-                    )}
-                  </div>
-                  {/* tags */}
-                  <div className="grid grid-cols-2 flex-1">
-                    {/* list card > bedrooms */}
-                    <div className="flex justify-between px-[5%] items-center text-[30px] gap-2">
+                    </div>
+                  )}
+                  {/* listing card > tags */}
+                  <div className="flex-1 grid grid-cols-2 gap-4">
+                    <div className="flex justify-between items-center text-[25px] px-2">
                       <MdOutlineBedroomParent />
-                      <h1>{item.bedroom}</h1>
+                      {item.bedroom}
                     </div>
-                    {/* list card > bathroom */}
-                    <div className="flex justify-between px-[5%] items-center text-[30px] gap-2">
+                    <div className="flex justify-between items-center text-[25px] px-2">
                       <FaBath />
-                      <h1>{item.bathroom}</h1>
+                      {item.bathroom}
                     </div>
-                    {/* list card > parking */}
-                    <div className="flex justify-between px-[5%] items-center text-[30px] gap-2">
+                    <div className="flex justify-between items-center text-[25px] px-2">
                       <BsFillCarFrontFill />
-                      <h1>{item.parking}</h1>
+                      {item.parking}
                     </div>
-                    {/* list card > furnished */}
-                    <div className="flex justify-between px-[5%] items-center text-[30px] gap-2">
+                    <div className="flex justify-between items-center text-[25px] px-2">
                       <MdOutlineLiving />
-                      <h1>{item.furnished ? "Yes" : "No"}</h1>
+                      {item.furnished ? "Yes" : "No"}
                     </div>
                   </div>
                 </div>
               </div>
-              {/* actions */}
-              <div className="hidden group-hover:flex justify-evenly items-center mt-[5%]">
+              <div className="absolute w-[100%] h-full top-0 left-0 group-hover:flex flex-col justify-evenly items-center hidden ">
                 <div
-                  onClick={() => navigate(`/listing/${item._id}`)}
-                  className="flex justify-center items-center w-[20%] h-[50px] bg-green-700 border border-[#f5f5f5] rounded-lg cursor-pointer hover:opacity-30"
+                  className="flex justify-center items-center w-[40%] h-[15%] bg-green-700 border border-[#f5f5f5] text-[#f5f5f5] rounded-lg hover:opacity-70 cursor-pointer"
+                  onClick={() => {
+                    navigate(`/listing/${item._id}`);
+                  }}
                 >
                   visit
                 </div>
-                <div className="flex justify-center items-center w-[20%] h-[50px] bg-orange-700 border border-[#f5f5f5] rounded-lg cursor-pointer hover:opacity-30">
+                <div
+                  className="flex justify-center items-center w-[40%] h-[15%] bg-amber-700 border border-[#f5f5f5] text-[#f5f5f5] rounded-lg hover:opacity-70 cursor-pointer"
+                  onClick={() => navigate(`/update-listing/${item._id}`)}
+                >
                   edit
                 </div>
                 <div
+                  className="flex justify-center items-center w-[40%] h-[15%] bg-red-700 border border-[#f5f5f5] text-[#f5f5f5] rounded-lg hover:opacity-70 cursor-pointer"
                   onClick={() => handleDelete(item._id)}
-                  className="flex justify-center items-center w-[20%] h-[50px] bg-red-700 border border-[#f5f5f5] rounded-lg cursor-pointer hover:opacity-30"
                 >
                   delete
                 </div>
               </div>
             </div>
-          ))}
+          ))
+        ) : (
+          // if fetch error
+          <h1>error</h1>
+        )}
       </div>
     </div>
   );

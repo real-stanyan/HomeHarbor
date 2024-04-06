@@ -90,8 +90,8 @@ export default function Listing() {
         <div className="flex flex-col bg-[#090831] max-w-[100vw] min-h-[100vh] pt-[90px] overflow-hidden">
           {/* image swiper */}
           <Swiper navigation className="w-[100%] h-[50vh]">
-            {data.imageUrls.map((url) => (
-              <SwiperSlide key={url}>
+            {data.imageUrls.map((url, i) => (
+              <SwiperSlide key={i}>
                 <div
                   className="h-[100%]"
                   style={{

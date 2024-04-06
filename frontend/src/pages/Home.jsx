@@ -61,7 +61,7 @@ export default function Home() {
   };
 
   return (
-    <div className="w-[100vw] min-h-[100vh] bg-[#090831] overflow-x-hidden">
+    <div className="max-w-[100vw] min-h-[100vh] bg-[#090831] overflow-x-hidden">
       <ToastContainer />
       {/* home text */}
       <div className="flex justify-center items-center bg-home_bg w-full h-[100vh] bg-cover">
@@ -81,7 +81,7 @@ export default function Home() {
             <div
               key={item._id}
               onClick={() => navigate(`/listing/${item._id}`)}
-              className="hover:-translate-y-3 duration-100 flex flex-col min-h-[400px] border border-[#f5f5f5] rounded-lg bg-[#f5f5f5] overflow-hidden font-embed"
+              className="hover:-translate-y-3 duration-100 flex flex-col min-h-[400px] border-2 border-[#333333] rounded-lg bg-[#e5f0f5] text-[#333333] overflow-hidden font-embed"
             >
               {/* cover image */}
               <img src={item.imageUrls[0]} alt="" className="w-full h-[65%]" />
