@@ -14,3 +14,24 @@ input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+/* 修改滚动条宽度 */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* 修改滚动条轨道颜色 */
+::-webkit-scrollbar-track {
+  background: #090831;
+}
+
+/* 修改滚动条滑块颜色 */
+::-webkit-scrollbar-thumb {
+  background: #f5f5f5;
+  border-radius: 20px;
+}
+
+/* 当鼠标悬停时，修改滚动条滑块颜色 */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
