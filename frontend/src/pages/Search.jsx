@@ -24,7 +24,7 @@ export default function Search() {
   const navigate = useNavigate();
   const [listings, setListings] = useState();
 
-  // render apartment model
+  // render models
   useEffect(() => {
     if (type === "apartment") {
       const canvas = document.getElementById("model");
