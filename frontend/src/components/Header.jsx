@@ -44,7 +44,7 @@ export default function Header() {
   return (
     <div
       id="header"
-      className="z-50 flex justify-between items-center fixed w-[100vw] h-[80px] mt-[-80px] bg-gradient-to-b from-[black] to-transparent p-5 md:p-10"
+      className="z-50 flex justify-between items-center fixed w-[100vw] h-[80px] mt-[-80px] bg-gradient-to-b from-[black] to-transparent p-2 md:p-10"
     >
       {/* header text */}
       <div

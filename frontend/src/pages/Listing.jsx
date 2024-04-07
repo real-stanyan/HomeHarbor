@@ -92,7 +92,7 @@ export default function Listing() {
     <>
       <ToastContainer />
       {data && (
-        <div className="flex flex-col bg-[#090831] max-w-[100vw] min-h-[100vh] pt-[90px] overflow-hidden">
+        <div className="flex flex-col bg-[#090831] max-w-[100vw] min-h-[100vh] pt-[80px] lg:pt-[90px] overflow-hidden">
           {/* image swiper */}
           <Swiper navigation className="w-[100%] h-[50vh]">
             {data.imageUrls.map((url, i) => (
@@ -108,72 +108,86 @@ export default function Listing() {
             ))}
           </Swiper>
           {/* information */}
-          <div className="flex-1 max-w-[90%] mx-auto grid grid-cols-2 font-embed text-[1.8vw] text-[#f5f5f5] p-2">
-            <div className="text-center p-2 w-[90%]">
-              <h1>{data.title}</h1>
-              <h1 className="text-[1vw] p-2 w-[100%] text-wrap break-all">
+          <div className="flex-1 max-w-[90%] mx-auto grid grid-cols-2 font-embed text-[#f5f5f5] p-2">
+            <div className="text-center lg:p-2 w-full">
+              <h1 className="font-bold text-[3vw] lg:text-[1.5vw]">
+                {data.title}
+              </h1>
+              <h1 className="font-light text-[2vw] lg:text-[1vw] p-2 w-[100%] text-wrap break-all">
                 {data.description}
               </h1>
             </div>
             {/* Tags */}
-            <div className="flex flex-col justify-evenly items-center w-[80%] mx-auto">
+            <div className="flex flex-col justify-evenly items-center w-full mx-auto p-2">
               {/* Address */}
               <div className="flex justify-center items-center gap-4">
-                <MdOutlineLocationCity className="text-[2vw]" />
-                <h1 className="text-[1.7vw]">{data.address}</h1>
+                <MdOutlineLocationCity className="text-[6vw] lg:text-[2vw]" />
+                <h1 className="flex-1 text-[3vw] lg:text-[1.7vw]">
+                  {data.address}
+                </h1>
               </div>
               {/* tags */}
               <div className="grid grid-cols-2 gap-4 w-full">
                 {/* Bedrooms */}
                 <div className="flex justify-between p-[5%] items-center gap-4">
-                  <MdOutlineBedroomParent className="text-[2vw]" />
-                  <h1 className="text-[1.7vw]">{data.bedroom}</h1>
+                  <MdOutlineBedroomParent className="text-[5vw] lg:text-[2vw]" />
+                  <h1 className="text-[4vw] lg:text-[1.7vw]">{data.bedroom}</h1>
                 </div>
                 {/* Bathrooms */}
                 <div className="flex justify-between p-[5%] items-center gap-4">
-                  <FaBath className="text-[2vw]" />
-                  <h1 className="text-[1.7vw]">{data.bathroom}</h1>
+                  <FaBath className="text-[5vw] lg:text-[2vw]" />
+                  <h1 className="text-[4vw] lg:text-[1.7vw]">
+                    {data.bathroom}
+                  </h1>
                 </div>
                 {/* Parking */}
                 <div className="flex justify-between p-[5%] items-center gap-4">
-                  <BsFillCarFrontFill className="text-[2vw]" />
-                  <h1 className="text-[1.7vw]">{data.parking}</h1>
+                  <BsFillCarFrontFill className="text-[5vw] lg:text-[2vw]" />
+                  <h1 className="text-[4vw] lg:text-[1.7vw]">{data.parking}</h1>
                 </div>
                 {/* Furnished */}
                 <div className="flex justify-between p-[5%] items-center gap-4">
-                  <MdOutlineLiving className="text-[2vw]" />
-                  <h1 className="text-[1.7vw] text-center">
+                  <MdOutlineLiving className="hidden lg:text-[2vw] lg:block" />
+                  <h1 className="text-[4vw] lg:text-[1.7vw]">
                     {data.furnished ? "furnished" : "unfurnished"}
                   </h1>
                 </div>
               </div>
             </div>
             {/* poster */}
-            <div className="flex justify-center items-center gap-4">
+            <div className="flex justify-center items-center gap-1 md:gap-2 lg:gap-4">
               <img
                 src={poster.avatar}
                 alt=""
-                className="w-[5vw] h-[5vw] border border-[#f5f5f5] rounded-full"
+                className="w-[10vw] h-[10vw] lg:w-[5vw] lg:h-[5vw] border border-[#f5f5f5] rounded-full"
               />
               <div className="flex flex-col justify-center items-center">
-                <p className="text-[1.5vw]">{poster.name}</p>
-                <p className="text-[1vw]">{poster.email}</p>
+                <p className="text-[3vw] lg:text-[1.5vw]">{poster.name}</p>
+                <p className="text-[2vw] lg:text-[1vw]">{poster.email}</p>
               </div>
             </div>
             {/* Prices */}
             {data.offer ? (
+              // if offer
               <div className="flex justify-center items-center gap-4">
-                <div className="flex justify-center items-center">
-                  <FaDollarSign />
-                  <h1>{setPriceForm(data.price)}</h1>
+                <div>
+                  <div className="flex justify-center items-center">
+                    <FaDollarSign className="text-[4vw] lg:text-[2vw]" />
+                    <h1 className="text-[3vw] lg:text-[1.5vw]">
+                      {setPriceForm(data.price)}
+                    </h1>
+                  </div>
+                  <div className="flex justify-center items-center gap-2">
+                    <IoMdPricetags className="text-[4vw] lg:text-[2vw]" />
+                    <h1 className="text-[3vw] lg:text-[1.5vw]">
+                      {setPriceForm(data.discount_price)}
+                    </h1>
+                  </div>
                 </div>
-                <div className="flex justify-center items-center gap-2">
-                  <IoMdPricetags />
-                  <h1>{setPriceForm(data.discount_price)}</h1>
-                </div>
-                <h1 className="text-green-700 text-[1.2vw]">
+
+                <h1 className="flex flex-col items-center justify-center text-green-700 text-[2.5vw] lg:text-[1.2vw] whitespace-nowrap">
                   Buy Now Save
-                  <span className="text-[#f5f5f5]">
+                  <span className="text-[#f5f5f5] text-[3vw] lg:text-[1.5vw]">
                     {setPriceForm(
                       String(
                         parseFloat(data.price) - parseFloat(data.discount_price)
@@ -183,9 +197,12 @@ export default function Listing() {
                 </h1>
               </div>
             ) : (
-              <div className="flex justify-center items-center gap-2">
-                <FaDollarSign />
-                <h1>{setPriceForm(data.price)}</h1>
+              // if no offer
+              <div className="flex justify-center items-center lg:gap-2">
+                <FaDollarSign className="text-[4.5vw] lg:text-[2vw]" />
+                <h1 className="text-[4vw] lg:text-[2vw]">
+                  {setPriceForm(data.price)}
+                </h1>
               </div>
             )}
           </div>
