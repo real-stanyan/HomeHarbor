@@ -21,11 +21,8 @@ import {
 } from "../redux/searchTerm/searchTermSlice";
 
 // import React icon
-import { MdOutlineLocationCity } from "react-icons/md";
 import { MdOutlineBedroomParent } from "react-icons/md";
 import { FaBath } from "react-icons/fa6";
-import { FaDollarSign } from "react-icons/fa6";
-import { IoMdPricetags } from "react-icons/io";
 import { BsFillCarFrontFill } from "react-icons/bs";
 import { MdOutlineLiving } from "react-icons/md";
 
@@ -47,11 +44,11 @@ export default function Header() {
   return (
     <div
       id="header"
-      className="flex items-center fixed w-[100vw] h-[80px] mt-[-80px] bg-gradient-to-b from-[black] to-transparent p-10"
+      className="flex justify-between items-center fixed w-[100vw] h-[80px] mt-[-80px] bg-gradient-to-b from-[black] to-transparent p-5 md:p-10"
     >
       {/* header text */}
       <div
-        className="flex justify-self-start text-[#f5f5f5] text-[1.5vw] font-semibold cursor-pointer"
+        className="flex text-[#f5f5f5] text-[4vw] md:text-[1.5vw] font-semibold cursor-pointer"
         onClick={() => {
           navigate("/");
         }}
@@ -60,7 +57,7 @@ export default function Header() {
         <p className="text-[#0077ED]">Harbor</p>
       </div>
       {/* header search */}
-      <form className="flex flex-1 items-center justify-center text-[black]">
+      <form className="hidden md:flex flex-1 items-center justify-center text-[black]">
         <div className="flex items-center justify-center bg-[#f5f5f5] px-2 rounded-l-lg">
           <MdOutlineBedroomParent className="text-[black] w-[30px] h-[30px]" />
           <input
@@ -125,20 +122,20 @@ export default function Header() {
         </button>
       </form>
       {/* account area */}
-      <div className="flex justify-self-end items-center text-lg text-[#f5f5f5] gap-2">
+      <div className="flex items-center text-lg text-[#f5f5f5] text-[1vw] md:text-[1.5vw] gap-2">
         {currentUser ? (
           // if sign in
           <>
             <img
               src={currentUser.avatar}
               alt="user avatar"
-              className="w-[2vw] h-[2vw] rounded-full"
+              className="w-[7vw] h-[7vw] md:w-[2vw] md:h-[2vw] rounded-full"
               onClick={() => {
                 navigate("/profile");
               }}
             />
             <p
-              className="text-[1vw] text-[#f5f5f5] hover:text-[#0077ED] hover:underline cursor-pointer"
+              className=" hover:text-[#0077ED] hover:underline cursor-pointer"
               onClick={() => {
                 navigate("/profile");
               }}
