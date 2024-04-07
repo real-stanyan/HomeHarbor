@@ -69,12 +69,12 @@ export default function SignUp() {
 
   return (
     <div className="bg-[#090831] w-[100vw] h-[100vh] flex flex-col justify-center items-center">
-      <h1 className="text-[#f5f5f5] text-[3vw] font-semibold font-embed mb-9">
+      <h1 className="text-[#f5f5f5] text-[6vw] lg:text-[3vw] font-semibold font-embed mb-9">
         {loading ? "Sign uping..." : "Sign up"}
       </h1>
-      <form onSubmit={handleSubmit} className="w-[35vw]">
+      <form onSubmit={handleSubmit} className="w-[70vw] lg:w-[35vw]">
         {/* email */}
-        <div className="flex justify-between items-center text-[#f5f5f5] text-[2vw] font-embed mb-4">
+        <div className="flex justify-between items-center text-[#f5f5f5] text-[4vw] lg:text-[2vw] font-embed mb-4">
           <label htmlFor="email">Email</label>
           <input
             id="email"
@@ -84,7 +84,7 @@ export default function SignUp() {
           />
         </div>
         {/* name */}
-        <div className="flex justify-between items-center text-[#f5f5f5] text-[2vw] font-embed mb-4">
+        <div className="flex justify-between items-center text-[#f5f5f5] text-[4vw] lg:text-[2vw] font-embed mb-4">
           <label htmlFor="name">Name</label>
           <input
             id="name"
@@ -94,7 +94,7 @@ export default function SignUp() {
           />
         </div>
         {/* password */}
-        <div className="flex justify-between items-center text-[#f5f5f5] text-[2vw] font-embed mb-4">
+        <div className="flex justify-between items-center text-[#f5f5f5] text-[4vw] lg:text-[2vw] font-embed mb-4">
           <label htmlFor="password">Password</label>
           <input
             id="password"
@@ -104,7 +104,7 @@ export default function SignUp() {
           />
         </div>
         {/* sign up btn */}
-        <button className="w-full h-[50px] text-[#f5f5f5] bg-[green] rounded-lg mb-4">
+        <button className="w-full h-[50px] text-[#f5f5f5] bg-[green] rounded-lg mb-4 text-[5vw] lg:text-[1.5vw]">
           Sign up
         </button>
         {/* Already have an account? */}

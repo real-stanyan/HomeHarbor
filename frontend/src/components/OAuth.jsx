@@ -40,7 +40,7 @@ export default function OAuth() {
     <button
       type="button"
       onClick={handleGoogleClick}
-      className="mb-4 flex justify-center text-[20px] items-center w-full h-[50px] text-[#f5f5f5] bg-[green] rounded-lg gap-2"
+      className="mb-4 flex justify-center text-[5vw] lg:text-[1.5vw] items-center w-full h-[50px] text-[#f5f5f5] bg-[green] rounded-lg gap-2"
     >
       <FaGoogle />
       Sign in with Google
