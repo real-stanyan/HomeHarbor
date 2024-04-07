@@ -17,7 +17,25 @@ import { MdOutlineLiving } from "react-icons/md";
 // import React Redux
 import { useSelector } from "react-redux";
 
+function useWindowSize() {
+  const [size, setSize] = useState([window.innerWidth, window.innerHeight]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setSize([window.innerWidth, window.innerHeight]);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // 组件卸载时移除事件监听
+    return () => window.removeEventListener("resize", handleResize);
+  }, []); // 空依赖数组确保事件监听只被添加一次
+
+  return size;
+}
+
 export default function Search() {
+  const [width, height] = useWindowSize();
   const { bedroom, bathroom, parking, furnished, type } = useSelector(
     (state) => state.searchTerm
   );
@@ -42,13 +60,13 @@ export default function Search() {
       // 设置场景背景颜色为蓝色
       scene.background = new THREE.Color(0x87ceeb); // 例如: 天蓝色
       const camera = new THREE.PerspectiveCamera(
-        75,
+        width > 600 ? 75 : 120,
         window.innerWidth / window.innerHeight,
         0.1,
         10000
       );
       camera.position.z = 0;
-      camera.position.y = 3200;
+      camera.position.y = width > 600 ? 3200 : 3000;
       camera.position.x = 2000;
       camera.rotateY(THREE.MathUtils.degToRad(90));
       camera.rotateX(THREE.MathUtils.degToRad(-20));
@@ -136,7 +154,7 @@ export default function Search() {
       // 设置场景背景颜色为蓝色
       scene.background = new THREE.Color(0x87ceeb); // 例如: 天蓝色
       const camera = new THREE.PerspectiveCamera(
-        100,
+        width > 600 ? 100 : 130,
         window.innerWidth / window.innerHeight,
         0.1,
         10000
@@ -255,7 +273,7 @@ export default function Search() {
         <canvas id="model" className="w-full h-[50vh]" />
       </div>
       {/* search results */}
-      <div className="grid grid-cols-4 max-w-[95%] mx-auto gap-4 pt-[50px]">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 max-w-[95%] mx-auto gap-4 pt-[50px]">
         {listings &&
           listings.map((item) => (
             <div
