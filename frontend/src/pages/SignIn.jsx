@@ -79,14 +79,14 @@ export default function SignIn() {
       <h1 className="text-[#f5f5f5] text-[6vw] lg:text-[3vw] font-semibold font-embed mb-9">
         {loading ? "Sign ining..." : "Sign in"}
       </h1>
-      <form onSubmit={handleSubmit} className="w-[70vw] lg:w-[35vw]">
+      <form onSubmit={handleSubmit} className="w-[75vw] md:[60vw] lg:w-[35vw]">
         {/* email */}
         <div className="flex justify-between items-center text-[#f5f5f5] text-[4vw] lg:text-[2vw] font-embed mb-4">
           <label htmlFor="email">Email</label>
           <input
             id="email"
             type="email"
-            className="text-[black] p-2 border-2 rounded-lg focus:outline-none"
+            className="text-[black] p-2 border-2 rounded-lg focus:outline-none w-[70%]"
             onChange={handleChange}
           />
         </div>
@@ -96,7 +96,7 @@ export default function SignIn() {
           <input
             id="password"
             type="password"
-            className="text-[black] p-2 border-2 rounded-lg focus:outline-none"
+            className="text-[black] p-2 border-2 rounded-lg focus:outline-none  w-[70%]"
             onChange={handleChange}
           />
         </div>
