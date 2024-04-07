@@ -92,9 +92,9 @@ export const searchListings = async (req, res, next) => {
 
   try {
     const listings = await Listing.find({
-      bedroom: { $gt: bedroom },
-      bathroom: { $gt: bathroom },
-      parking: { $gt: parking },
+      bedroom: { $gte: bedroom },
+      bathroom: { $gte: bathroom },
+      parking: { $gte: parking },
       furnished: furnished,
       type: type,
     });

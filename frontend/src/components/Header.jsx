@@ -11,7 +11,14 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
 // import React Redux
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  setBedroom,
+  setBathroom,
+  setParking,
+  setFurnished,
+  setType,
+} from "../redux/searchTerm/searchTermSlice";
 
 // import React icon
 import { MdOutlineLocationCity } from "react-icons/md";
@@ -23,15 +30,12 @@ import { BsFillCarFrontFill } from "react-icons/bs";
 import { MdOutlineLiving } from "react-icons/md";
 
 export default function Header() {
+  const dispatch = useDispatch();
   const location = useLocation();
   const { currentUser } = useSelector((state) => state.user);
-  const [searchTerm, setSearchTerm] = useState({
-    bedroom: 2,
-    bathroom: 2,
-    parking: 1,
-    furnished: "yes",
-    type: "apartment",
-  });
+  const { bedroom, bathroom, parking, furnished, type } = useSelector(
+    (state) => state.searchTerm
+  );
   const navigate = useNavigate();
   useGSAP(() => {
     gsap.to("#header", {
@@ -39,13 +43,6 @@ export default function Header() {
       direction: 1.5,
     });
   }, []);
-
-  const handleChange = (e) => {
-    setSearchTerm({
-      ...searchTerm,
-      [e.target.id]: e.target.value,
-    });
-  };
 
   return (
     <div
@@ -69,8 +66,8 @@ export default function Header() {
           <input
             type="number"
             id="bedroom"
-            onChange={handleChange}
-            defaultValue={searchTerm.bedroom}
+            onChange={(e) => dispatch(setBedroom(e.target.value))}
+            defaultValue={bedroom}
             className="p-2 rounded-lg focus:outline-none w-[50px] h-[40px] text-center bg-[#f5f5f5]"
           />
         </div>
@@ -79,8 +76,8 @@ export default function Header() {
           <input
             type="number"
             id="bathroom"
-            onChange={handleChange}
-            defaultValue={searchTerm.bathroom}
+            onChange={(e) => dispatch(setBathroom(e.target.value))}
+            defaultValue={bathroom}
             className="p-2 rounded-lg focus:outline-none w-[50px] h-[40px] text-center bg-[#f5f5f5]"
           />
         </div>
@@ -89,8 +86,8 @@ export default function Header() {
           <input
             type="number"
             id="parking"
-            onChange={handleChange}
-            defaultValue={searchTerm.parking}
+            onChange={(e) => dispatch(setParking(e.target.value))}
+            defaultValue={parking}
             className="p-2 rounded-lg focus:outline-none w-[50px] h-[40px] text-center bg-[#f5f5f5]"
           />
         </div>
@@ -98,7 +95,8 @@ export default function Header() {
           <MdOutlineLiving className="text-[black] w-[30px] h-[30px]" />
           <select
             id="furnished"
-            onChange={handleChange}
+            onChange={(e) => dispatch(setFurnished(e.target.value))}
+            defaultValue={furnished}
             className="p-2 rounded-lg focus:outline-none w-[70px] h-[40px] text-center bg-[#f5f5f5]"
           >
             <option value="yes">yes</option>
@@ -109,7 +107,8 @@ export default function Header() {
           <h1>Type</h1>
           <select
             id="type"
-            onChange={handleChange}
+            onChange={(e) => dispatch(setType(e.target.value))}
+            defaultValue={type}
             className="p-2 rounded-lg focus:outline-none w-[120px] h-[40px] text-center bg-[#f5f5f5]"
           >
             <option value="apartment">Apartment</option>
@@ -118,9 +117,7 @@ export default function Header() {
         </div>
         <button
           onClick={() => {
-            navigate(
-              `/search?bedroom=${searchTerm.bedroom}&bathroom=${searchTerm.bathroom}&parking=${searchTerm.parking}&furnished=${searchTerm.furnished}&type=${searchTerm.type}`
-            );
+            navigate(`/search`);
           }}
           className="group flex items-center hover:bg-[black] justify-center bg-[#f5f5f5] w-[50px] h-[40px] px-2 rounded-r-lg"
         >

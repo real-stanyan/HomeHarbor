@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  bedroom: "0",
-  bathroom: "0",
-  parking: "0",
+  bedroom: "1",
+  bathroom: "1",
+  parking: "1",
   furnished: "yes",
-  type: "house",
+  type: "apartment",
 };
 
 const searchTermSlice = createSlice({

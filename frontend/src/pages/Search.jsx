@@ -3,8 +3,7 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 // import React Router
-import { useLocation } from "react-router-dom";
-import queryString from "query-string";
+import { useNavigate } from "react-router-dom";
 
 // import React icon
 import { MdOutlineLocationCity } from "react-icons/md";
@@ -22,14 +21,13 @@ export default function Search() {
   const { bedroom, bathroom, parking, furnished, type } = useSelector(
     (state) => state.searchTerm
   );
-  const location = useLocation();
-  const queryParams = queryString.parse(location.search);
+  const navigate = useNavigate();
   const [listings, setListings] = useState();
 
   // render apartment model
   useEffect(() => {
     if (type === "apartment") {
-      const canvas = document.getElementById("apartmentModel");
+      const canvas = document.getElementById("model");
       // 先初始化 renderer
       const renderer = new THREE.WebGLRenderer({
         canvas,
@@ -117,16 +115,12 @@ export default function Search() {
 
       return () => {
         window.removeEventListener("resize", handleResize);
-        scene.remove(model.scene);
-        geometry.dispose();
-        material.dispose();
+        // scene.remove(model.scene);
+        // geometry.dispose();
+        // material.dispose();
       };
-    }
-  }, []);
-  // render house model
-  useEffect(() => {
-    if (type === "house") {
-      const canvas = document.getElementById("houseModel");
+    } else if (type === "house") {
+      const canvas = document.getElementById("model");
       // 先初始化 renderer
       const renderer = new THREE.WebGLRenderer({
         canvas,
@@ -214,12 +208,12 @@ export default function Search() {
 
       return () => {
         window.removeEventListener("resize", handleResize);
-        scene.remove(model.scene);
-        geometry.dispose();
-        material.dispose();
+        // scene.remove(model.scene);
+        // geometry.dispose();
+        // material.dispose();
       };
     }
-  }, []);
+  }, [type]);
   useEffect(() => {
     const fetchListings = async () => {
       const res = await fetch("/api/listing/search-listings", {
@@ -235,7 +229,6 @@ export default function Search() {
           type,
         }),
       });
-      console.log("🚀 ~ fetchListings ~ queryParams:", queryParams);
       const data = await res.json();
       setListings(data);
     };
@@ -259,16 +252,7 @@ export default function Search() {
   return (
     <div className="bg-[#090831] flex flex-col max-w-[100vw] min-h-[100vh] text-[#f5f5f5] font-embed">
       <div className="w-[100%]">
-        <canvas
-          id="apartmentModel"
-          className="w-full h-[50vh]"
-          hidden={type === "house"}
-        />
-        <canvas
-          id="houseModel"
-          className="w-full h-[50vh]"
-          hidden={type === "apartment"}
-        />
+        <canvas id="model" className="w-full h-[50vh]" />
       </div>
       {/* search results */}
       <div className="grid grid-cols-4 max-w-[95%] mx-auto gap-4 pt-[50px]">
