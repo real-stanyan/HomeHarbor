@@ -173,7 +173,7 @@ export default function Profile() {
       <ToastContainer />
       {/* basic info */}
       <form onSubmit={handleSubmit} className="flex p-[2vw]">
-        <div className="flex flex-col justify-center items-center gap-3">
+        <div className="flex flex-col justify-center items-center gap-3 w-[30%] lg:w-[20%]">
           <input
             type="file"
             ref={fileRef}
@@ -185,7 +185,7 @@ export default function Profile() {
             onClick={() => fileRef.current.click()}
             src={formData.avatar || currentUser.avatar}
             alt="user avatar"
-            className="w-[10vw] h-[10vw] rounded-full cursor-pointer"
+            className="w-[17vw] h-[17vw] lg:w-[10vw] lg:h-[10vw] rounded-full cursor-pointer"
           />
           {fileUploadError ? (
             <span className="text-red-700">
@@ -203,30 +203,34 @@ export default function Profile() {
             type="text"
             defaultValue={currentUser.name}
             onChange={handleChange}
-            className="text-[#f5f5f5] bg-transparent text-[1.5vw] w-[80%] h-[50px] p-2 border-2 text-center rounded-lg ml-4 focus:outline-none"
+            className="text-[#f5f5f5] bg-transparent text-[4vw] lg:text-[1.5vw] w-[80%] h-[30px] lg:h-[50px] lg:p-2 border-2 text-center rounded-lg ml-4 focus:outline-none"
           />
         </div>
         <div className="flex flex-1 flex-col justify-around">
-          <div className="flex justify-around">
+          <div className="flex flex-col lg:flex-row justify-around">
             {/* email */}
             <div className="flex justify-between items-center text-[#f5f5f5] text-[2vw] font-embed mb-4">
-              <label htmlFor="email">Email</label>
+              <label htmlFor="email" className="text-[3vw] lg:text-[2vw]">
+                Email
+              </label>
               <input
                 id="email"
                 type="email"
                 defaultValue={currentUser.email}
                 onChange={handleChange}
-                className="text-[black] text-[1vw] w-[20vw] h-[50px] p-2 border-2 rounded-lg ml-4 focus:outline-none"
+                className="text-[black] text-[4vw] lg:text-[1vw] w-[70%] lg:w-[20vw] h-[30px] lg:h-[50px] p-2 border-2 rounded-lg ml-4 focus:outline-none"
               />
             </div>
             {/* password */}
             <div className="flex justify-between items-center text-[#f5f5f5] text-[2vw] font-embed mb-4">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password" className="text-[3vw] lg:text-[2vw]">
+                Password
+              </label>
               <input
                 id="password"
                 type="password"
                 onChange={handleChange}
-                className="text-[black] p-2 text-[1vw] w-[20vw] border-2 rounded-lg focus:outline-none ml-4"
+                className="text-[black] p-2 text-[4vw] lg:text-[1vw] w-[70%] lg:w-[20vw] h-[30px] lg:h-[50px] border-2 rounded-lg focus:outline-none ml-4"
               />
             </div>
           </div>
@@ -238,7 +242,7 @@ export default function Profile() {
               onClick={() => {
                 navigate("/post-listing");
               }}
-              className="w-[20%] h-[50px] bg-amber-600 text-[#f5f5f5] text-[1.5vw] font-medium rounded-lg hover:opacity-60 "
+              className="w-[25%] lg:w-[20%] h-[30px] md:h-[50px] lg:h-[70px] bg-amber-600 text-[#f5f5f5] text-[3vw] lg:text-[1.5vw] font-medium rounded-lg hover:opacity-60 "
             >
               post
             </button>
@@ -246,14 +250,14 @@ export default function Profile() {
             <button
               type="button"
               onClick={handleSignOut}
-              className="w-[20%] h-[50px] bg-red-700 text-[#f5f5f5] text-[1.5vw] font-medium rounded-lg hover:opacity-60"
+              className="w-[25%] lg:w-[20%] h-[30px] md:h-[50px] lg:h-[70px] bg-red-700 text-[#f5f5f5] text-[3vw] lg:text-[1.5vw] font-medium rounded-lg hover:opacity-60"
             >
               sign out
             </button>
             {/* update */}
             <button
               disabled={loading}
-              className="w-[20%] h-[50px] bg-green-700 text-[#f5f5f5] text-[1.5vw] font-medium rounded-lg hover:opacity-60 disabled:opacity-30"
+              className="w-[25%] lg:w-[20%] h-[30px] md:h-[50px] lg:h-[70px] bg-green-700 text-[#f5f5f5] text-[3vw] lg:text-[1.5vw] font-medium rounded-lg hover:opacity-60 disabled:opacity-30"
             >
               {loading ? "updating" : "update"}
             </button>
@@ -262,7 +266,7 @@ export default function Profile() {
       </form>
       <hr className="my-4" />
       {/* listing */}
-      <div className="w-[90%] mx-auto grid grid-cols-4 gap-3">
+      <div className="w-[90%] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
         {listings ? (
           // if fetch success
           listings.map((item) => (
