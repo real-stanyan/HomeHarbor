@@ -92,7 +92,7 @@ export default function Listing() {
     <>
       <ToastContainer />
       {data && (
-        <div className="flex flex-col bg-[#090831] max-w-[100vw] min-h-[100vh] pt-[80px] lg:pt-[90px] overflow-hidden">
+        <div className="flex flex-col bg-[#090831] max-w-[100vw] h-[100vh] pt-[80px] lg:pt-[90px] overflow-hidden">
           {/* image swiper */}
           <Swiper navigation className="w-[100%] h-[50vh]">
             {data.imageUrls.map((url, i) => (
@@ -108,7 +108,7 @@ export default function Listing() {
             ))}
           </Swiper>
           {/* information */}
-          <div className="flex-1 max-w-[90%] mx-auto grid grid-cols-2 font-embed text-[#f5f5f5] p-2">
+          <div className="h-[50vh] max-w-[90%] mx-auto grid grid-cols-2 font-embed text-[#f5f5f5] p-2">
             <div className="text-center lg:p-2 w-full">
               <h1 className="font-bold text-[3vw] lg:text-[1.5vw]">
                 {data.title}
