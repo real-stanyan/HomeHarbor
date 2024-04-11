@@ -2,7 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-const cors = require("cors");
+import cors from "cors";
 
 // import Routers
 import authRouter from "./routes/auth.route.js";
