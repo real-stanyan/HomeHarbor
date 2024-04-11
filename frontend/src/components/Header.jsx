@@ -112,12 +112,12 @@ export default function Header() {
             <option value="house">House</option>
           </select>
         </div>
-        <button
+        <div
           onClick={() => navigate("/search")}
           className="group flex items-center hover:bg-[black] justify-center bg-[#f5f5f5] w-[50px] h-[40px] px-2 rounded-r-lg"
         >
           <FaSearch className="text-[black] text-[20px] group-hover:text-[#f5f5f5]" />
-        </button>
+        </div>
       </form>
       {/* account area */}
       <div className="flex items-center text-lg text-[#f5f5f5] text-[1vw] md:text-[1.5vw] gap-2">
