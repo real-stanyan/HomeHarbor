@@ -25,7 +25,7 @@ const app = express();
 // CORS configuration to accept credentials
 app.use(
   cors({
-    origin: "*",
+    origin: "https://home-harbor-client.vercel.app/",
     credentials: true, // 允许携带凭证
     origin: (origin, callback) => {
       if (!origin) {
