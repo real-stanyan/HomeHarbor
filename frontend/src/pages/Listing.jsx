@@ -52,7 +52,9 @@ export default function Listing() {
   }, [params.id]);
 
   const fetchData = async (id) => {
-    const res = await fetch(`/api/listing/get-listing/${id}`);
+    const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/listing/get-listing/${id}`
+    );
     const data = await res.json();
 
     if (data.success === false) {
@@ -68,7 +70,9 @@ export default function Listing() {
   };
 
   const fetchPoster = async (id) => {
-    const res = await fetch(`/api/user/get-user/${id}`);
+    const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/user/get-user/${id}`
+    );
     const data = await res.json();
     setPoster(data);
   };

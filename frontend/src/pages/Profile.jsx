@@ -64,7 +64,9 @@ export default function Profile() {
   }, []);
 
   const fetchListings = async (id) => {
-    const res = await fetch(`/api/user/get-user-listings/${id}`);
+    const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/user/get-user-listings/${id}`
+    );
     const data = await res.json();
     setListings(data);
   };
@@ -103,7 +105,9 @@ export default function Profile() {
   const handleSignOut = async () => {
     try {
       dispatch(signOutUserStart());
-      const res = await fetch("/api/auth/sign-out");
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/auth/sign-out`
+      );
       const data = await res.json();
       if (data.success === false) {
         dispatch(signOutUserFailure(error));
@@ -119,13 +123,16 @@ export default function Profile() {
     e.preventDefault();
     try {
       dispatch(updateUserStart());
-      const res = await fetch(`/api/user/update/${currentUser._id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/user/update/${currentUser._id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
       const data = await res.json();
       if (data.success === false) {
         dispatch(updateUserFailure(data.message));
@@ -153,12 +160,15 @@ export default function Profile() {
   };
 
   const handleDelete = async (id) => {
-    const res = await fetch(`/api/listing/delete-listing/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/listing/delete-listing/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     const data = await res.json();
     console.log("🚀 ~ handleDelete ~ data:", data.status);
     if (data.success === false) {

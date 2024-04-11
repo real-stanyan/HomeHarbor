@@ -234,19 +234,22 @@ export default function Search() {
   }, [type]);
   useEffect(() => {
     const fetchListings = async () => {
-      const res = await fetch("/api/listing/search-listings", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          bedroom,
-          bathroom,
-          parking,
-          furnished,
-          type,
-        }),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/listing/search-listings`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            bedroom,
+            bathroom,
+            parking,
+            furnished,
+            type,
+          }),
+        }
+      );
       const data = await res.json();
       setListings(data);
     };

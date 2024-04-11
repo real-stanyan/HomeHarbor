@@ -49,7 +49,7 @@ export default function Home() {
   useEffect(() => {
     const fetchListings = async () => {
       const res = await fetch(
-        "https://home-harbor-backend.vercel.app/api/listing/get-listings"
+        `${import.meta.env.VITE_API_URL}/api/listing/get-listings`
       );
       const data = await res.json();
       setListings(data);

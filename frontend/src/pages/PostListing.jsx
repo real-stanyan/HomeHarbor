@@ -212,13 +212,16 @@ export default function PostListing() {
     }
     try {
       setPosting(true);
-      const res = await fetch("/api/listing/post-listing", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ...formData, userRef: currentUser._id }),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/listing/post-listing`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ...formData, userRef: currentUser._id }),
+        }
+      );
       const data = await res.json();
       if (data.success === false) {
         setPosting(false);

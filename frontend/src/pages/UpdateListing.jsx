@@ -42,7 +42,9 @@ export default function UpdateListing() {
       navigate("/");
     }
     const fetchListing = async () => {
-      const res = await fetch(`/api/listing/get-listing/${params.id}`);
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/listing/get-listing/${params.id}`
+      );
       const data = await res.json();
       setListing(data);
     };
@@ -211,13 +213,18 @@ export default function UpdateListing() {
     }
     try {
       setPosting(true);
-      const res = await fetch(`/api/listing/update-listing/${listing._id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(listing),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/listing/update-listing/${
+          listing._id
+        }`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(listing),
+        }
+      );
       const data = await res.json();
       if (data.success === false) {
         setPosting(false);
