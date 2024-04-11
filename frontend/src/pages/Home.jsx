@@ -48,7 +48,9 @@ export default function Home() {
 
   useEffect(() => {
     const fetchListings = async () => {
-      const res = await fetch("/api/listing/get-listings");
+      const res = await fetch(
+        "https://home-harbor-backend.vercel.app/api/listing/get-listings"
+      );
       const data = await res.json();
       setListings(data);
     };

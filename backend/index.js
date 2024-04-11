@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+const cors = require("cors");
 
 // import Routers
 import authRouter from "./routes/auth.route.js";
@@ -24,7 +25,7 @@ mongoose
 // const __dirname = path.resolve();
 
 const app = express();
-
+app.use(cors());
 app.use(express.json());
 
 app.use(cookieParser());
