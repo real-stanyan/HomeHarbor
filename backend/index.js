@@ -27,7 +27,6 @@ mongoose
 const app = express();
 app.use(
   cors({
-    origin: "http://localhost:5173/", // 替换为你的前端地址
     credentials: true,
   })
 );
