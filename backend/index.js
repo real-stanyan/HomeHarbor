@@ -25,6 +25,7 @@ const app = express();
 // CORS configuration to accept credentials
 app.use(
   cors({
+    origin: "*",
     credentials: true, // 允许携带凭证
     origin: (origin, callback) => {
       if (!origin) {
