@@ -8,7 +8,6 @@ import cors from "cors";
 import authRouter from "./routes/auth.route.js";
 import userRouter from "./routes/user.route.js";
 import listingRouter from "./routes/listing.route.js";
-// import path from "path";
 
 dotenv.config();
 
@@ -22,10 +21,25 @@ mongoose
     console.log(err);
   });
 
-// const __dirname = path.resolve();
-
 const app = express();
-app.use(cors());
+// CORS configuration to accept credentials
+app.use(
+  cors({
+    credentials: true, // 允许携带凭证
+    origin: (origin, callback) => {
+      if (!origin) {
+        // 允许非浏览器的请求（比如 Postman）
+        callback(null, true);
+      } else {
+        // 这里可以加入逻辑来检查origin是否在你的允许列表中
+        // 如果是，你可以回调 callback(null, true) 来允许这个来源的跨域请求
+        // 为了简化，这里我们允许所有来源
+        callback(null, true);
+      }
+    },
+  })
+);
+
 app.use(express.json());
 
 app.use(cookieParser());
@@ -37,12 +51,6 @@ app.listen(3000, () => {
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/listing", listingRouter);
-
-// app.use(express.static(path.join(__dirname, "/frontend/dist")));
-
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
-// });
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
