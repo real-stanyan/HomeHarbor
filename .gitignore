@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 .env
 real_estate_data_backup
+
+vecel.json
